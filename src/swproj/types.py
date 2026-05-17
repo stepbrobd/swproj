@@ -1,0 +1,33 @@
+from dataclasses import dataclass
+from enum import StrEnum
+from pathlib import Path
+from typing import Final
+
+
+# SoundID measurement grid from sweeps is 355 log spaced points from 20 hz to 22000 hz
+N_POINTS: Final[int] = 355
+F_MIN: Final[float] = 20.0
+F_MAX: Final[float] = 22000.0
+
+
+# Biquad filter types match the target EQ json format, string values must be kebab case
+class BiquadType(StrEnum):
+    BELL = "bell"
+    LOW_SHELF = "low-shelf"
+    HIGH_SHELF = "high-shelf"
+
+
+@dataclass(frozen=True)
+class BiquadSpec:
+    type: BiquadType
+    freq_hz: float
+    gain_db: float
+    q: float
+    enabled: bool = True
+
+
+@dataclass(frozen=True)
+class TargetEq:
+    name: str
+    filters: tuple[BiquadSpec, ...]
+    source: Path
