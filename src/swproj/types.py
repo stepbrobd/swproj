@@ -3,6 +3,12 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Final
 
+import numpy as np
+from numpy.typing import NDArray
+
+
+type FloatArr = NDArray[np.float64]
+
 
 # SoundID measurement grid from sweeps is 355 log spaced points from 20 hz to 22000 hz
 N_POINTS: Final[int] = 355
