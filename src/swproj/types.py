@@ -6,7 +6,6 @@ from typing import Final
 import numpy as np
 from numpy.typing import NDArray
 
-
 type FloatArr = NDArray[np.float64]
 
 
@@ -36,4 +35,31 @@ class BiquadSpec:
 class TargetEq:
     name: str
     filters: tuple[BiquadSpec, ...]
+    source: Path
+
+
+@dataclass(frozen=True)
+class Extremum:
+    freq_hz: float
+    mag_db: float
+
+
+@dataclass(frozen=True)
+class Curve:
+    """
+    Log spaced frequency response, magnitude in db.
+    """
+
+    freq_hz: FloatArr
+    mag_db: FloatArr
+
+
+@dataclass(frozen=True)
+class Measurement:
+    """
+    Stereo room measurement extracted from a .swproj file.
+    """
+
+    left: Curve
+    right: Curve
     source: Path
