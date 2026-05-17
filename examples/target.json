@@ -1,0 +1,42 @@
+{
+  "filterGroups": [
+    {
+      "cutoff": {
+        "enabled": true,
+        "flipState": "inner",
+        "leftFreq": 20.0,
+        "rightFreq": 20000.0
+      },
+      "filters": [
+        {
+          "colorId": 1,
+          "enabled": true,
+          "frequency": 250.0,
+          "gain": -1.0,
+          "id": 1,
+          "q": 1.0,
+          "type": "bell"
+        },
+        {
+          "colorId": 4,
+          "enabled": true,
+          "frequency": 9000.000000000025,
+          "gain": 1.5,
+          "id": 3,
+          "q": 1.0,
+          "type": "high-shelf"
+        },
+        {
+          "colorId": 0,
+          "enabled": true,
+          "frequency": 45.0,
+          "gain": 3.5,
+          "id": 4,
+          "q": 1.0,
+          "type": "low-shelf"
+        }
+      ]
+    }
+  ],
+  "name": "Low volume"
+}
