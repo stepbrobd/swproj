@@ -4,4 +4,11 @@ version = "2026.517.0"
 description = "toolkit for sonarworks soundid"
 readme = "readme.md"
 requires-python = ">=3.12"
-dependencies = ["matplotlib", "numpy"]
+dependencies = ["click", "matplotlib", "numpy"]
+
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[project.scripts]
+swproj = "swproj.cli:cli"
