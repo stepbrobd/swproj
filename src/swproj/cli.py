@@ -58,21 +58,22 @@ def measure(measurement_file: Path, output: Path | None) -> None:
     help="output png path (default: ./target.png)",
 )
 @click.option(
-    "--fs",
-    type=float,
-    default=48000.0,
+    "-r",
+    "--rate",
+    type=click.IntRange(8000, 384000),
+    default=48000,
     show_default=True,
-    help="sample rate for biquad evaluation",
+    help="sample rate (hz) for biquad evaluation",
 )
-def target(target_file: Path, output: Path | None, fs: float) -> None:
+def target(target_file: Path, output: Path | None, rate: int) -> None:
     """
     Visualise a SoundID target EQ JSON.
     """
     out = output if output is not None else Path.cwd() / "target.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     tgt = parse_target_json(target_file)
-    print_target_summary(tgt, fs=fs)
-    plot_target(tgt, fs=fs, out=out)
+    print_target_summary(tgt, fs=rate)
+    plot_target(tgt, fs=rate, out=out)
     click.echo(f"wrote {out}")
 
 
