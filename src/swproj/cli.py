@@ -33,7 +33,7 @@ def cli() -> None:
     "--output",
     type=click.Path(dir_okay=False, path_type=Path),
     default=None,
-    help="output png path (default: ./measurement.png)",
+    help="Output PNG path (default: ./measurement.png).",
 )
 def measure(measurement_file: Path, output: Path | None) -> None:
     """
@@ -57,7 +57,7 @@ def measure(measurement_file: Path, output: Path | None) -> None:
     "--output",
     type=click.Path(dir_okay=False, path_type=Path),
     default=None,
-    help="output png path (default: ./target.png)",
+    help="Output PNG path (default: ./target.png).",
 )
 @click.option(
     "-r",
@@ -65,7 +65,7 @@ def measure(measurement_file: Path, output: Path | None) -> None:
     type=click.IntRange(8000, 384000),
     default=48000,
     show_default=True,
-    help="sample rate (hz) for biquad evaluation",
+    help="Sample rate (Hz) for biquad evaluation.",
 )
 def target(target_file: Path, output: Path | None, rate: int) -> None:
     """
@@ -86,7 +86,7 @@ def target(target_file: Path, output: Path | None, rate: int) -> None:
     "measure_file",
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
     default=None,
-    help="room measurement (.swproj)",
+    help="Room measurement (.swproj).",
 )
 @click.option(
     "-t",
@@ -94,7 +94,7 @@ def target(target_file: Path, output: Path | None, rate: int) -> None:
     "target_file",
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
     default=None,
-    help="target eq (.json)",
+    help="Target EQ (.json).",
 )
 @click.option(
     "-f",
@@ -102,8 +102,8 @@ def target(target_file: Path, output: Path | None, rate: int) -> None:
     "phase",
     type=click.Choice(FilterPhase, case_sensitive=False),
     default=FilterPhase.LINEAR,
-    show_default=True,
-    help="phase character of the room-correction fir",
+    show_default="linear",
+    help="Phase character of the room-correction FIR.",
 )
 @click.option(
     "-r",
@@ -111,7 +111,7 @@ def target(target_file: Path, output: Path | None, rate: int) -> None:
     type=click.IntRange(8000, 384000),
     default=48000,
     show_default=True,
-    help="sample rate (hz)",
+    help="Sample rate (Hz).",
 )
 @click.option(
     "-n",
@@ -119,7 +119,7 @@ def target(target_file: Path, output: Path | None, rate: int) -> None:
     type=click.IntRange(256),
     default=8192,
     show_default=True,
-    help="fir length (samples)",
+    help="FIR length (samples).",
 )
 @click.option(
     "-b",
@@ -127,14 +127,14 @@ def target(target_file: Path, output: Path | None, rate: int) -> None:
     type=click.FloatRange(0.0),
     default=12.0,
     show_default=True,
-    help="cap on inverse magnitude (db)",
+    help="Cap on inverse magnitude (dB).",
 )
 @click.option(
     "-o",
     "--output",
     type=click.Path(dir_okay=False, path_type=Path),
     default=None,
-    help="write yaml to file (default: stdout)",
+    help="Write YAML to file (default: stdout).",
 )
 def camilladsp(
     measure_file: Path | None,
@@ -180,6 +180,7 @@ def comp(shell: str) -> None:
     """
     Print completion script for the chosen shell.
 
+    \b
     Pipe the output into your shell's completion location, e.g.:
         swproj comp bash > ~/.local/share/bash-completion/completions/swproj
         swproj comp zsh  > ~/.zfunc/_swproj
