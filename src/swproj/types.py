@@ -22,6 +22,11 @@ class BiquadType(StrEnum):
     HIGH_SHELF = "high-shelf"
 
 
+class FilterPhase(StrEnum):
+    LINEAR = "linear"
+    MINIMUM = "minimum"
+
+
 @dataclass(frozen=True)
 class BiquadSpec:
     type: BiquadType
