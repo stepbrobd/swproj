@@ -7,6 +7,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 type FloatArr = NDArray[np.float64]
+type ComplexArr = NDArray[np.complex128]
 
 
 # SoundID measurement grid from sweeps is 355 log spaced points from 20 hz to 22000 hz
