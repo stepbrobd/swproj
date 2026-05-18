@@ -49,3 +49,28 @@ wrote examples/target.png
 ```
 
 ![Target EQ](examples/target.png)
+
+```console
+# swproj camilladsp -m examples/measurement.swproj -t examples/target.json -f minimum -o examples/camilladsp.yaml
+$ swproj camilladsp -h
+Usage: swproj camilladsp [OPTIONS]
+
+  Emit CamillaDSP filters+pipeline YAML built from a SoundID measurement
+  and/or target EQ.
+
+Options:
+  -m, --measure FILE             Room measurement (.swproj).
+  -t, --target FILE              Target EQ (.json).
+  -f, --filter [linear|minimum]  Phase character of the room-correction FIR.
+                                 [default: (linear)]
+  -r, --rate INTEGER RANGE       Sample rate (Hz).  [default: 48000;
+                                 8000<=x<=384000]
+  -n, --taps INTEGER RANGE       FIR length (samples).  [default: 8192;
+                                 x>=256]
+  -b, --max-boost FLOAT RANGE    Cap on inverse magnitude (dB).  [default:
+                                 12.0; x>=0.0]
+  -o, --output FILE              Write YAML to file (default: stdout).
+  -h, --help                     Show this message and exit.
+```
+
+See output example at [`examples/camilladsp.yaml`](examples/camilladsp.yaml).

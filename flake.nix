@@ -48,7 +48,7 @@
             root="$(dirname "$root")"
           done
           pushd "$root" > /dev/null
-          ${lib.getExe pkgs.deno} fmt readme.md
+          ${lib.getExe pkgs.deno} fmt **/*.md **/*.yaml
           ${lib.getExe pkgs.mypy} --disable-error-code=import .
           ${lib.getExe pkgs.nixpkgs-fmt} .
           ${lib.getExe pkgs.ruff} check --fix --unsafe-fixes --preview .
