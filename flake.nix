@@ -35,6 +35,8 @@
           UV_PYTHON = python.interpreter;
           UV_PYTHON_DOWNLOADS = "never";
           UV_VENV_CLEAR = true;
+
+          LD_LIBRARY_PATH = lib.makeLibraryPath (with pkgs; [ stdenv.cc.cc ]);
         };
 
         formatter = pkgs.writeShellScriptBin "formatter" ''
