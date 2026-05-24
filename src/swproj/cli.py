@@ -7,6 +7,8 @@ from click.shell_completion import get_completion_class
 from swproj.analysis import print_measurement_summary, print_target_summary
 from swproj.camilladsp import build_config, emit_yaml
 from swproj.parse import parse_swproj, parse_target_json
+from swproj.pipewire import build_config as build_pw_config
+from swproj.pipewire import emit_conf
 from swproj.plot import plot_measurement, plot_target
 from swproj.types import FilterPhase
 
@@ -165,6 +167,102 @@ def camilladsp(
         phase=phase,
     )
     text = emit_yaml(config)
+
+    if output is not None:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(text)
+        click.echo(f"wrote {output}", err=True)
+    else:
+        click.echo(text, nl=False)
+
+
+@cli.command()
+@click.option(
+    "-m",
+    "--measure",
+    "measure_file",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    default=None,
+    help="Room measurement (.swproj).",
+)
+@click.option(
+    "-t",
+    "--target",
+    "target_file",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    default=None,
+    help="Target EQ (.json).",
+)
+@click.option(
+    "-f",
+    "--filter",
+    "phase",
+    type=click.Choice(FilterPhase, case_sensitive=False),
+    default=FilterPhase.LINEAR,
+    show_default="linear",
+    help="Phase character of the room-correction FIR.",
+)
+@click.option(
+    "-r",
+    "--rate",
+    type=click.IntRange(8000, 384000),
+    default=48000,
+    show_default=True,
+    help="Sample rate (Hz).",
+)
+@click.option(
+    "-n",
+    "--taps",
+    type=click.IntRange(256),
+    default=8192,
+    show_default=True,
+    help="FIR length (samples).",
+)
+@click.option(
+    "-b",
+    "--max-boost",
+    type=click.FloatRange(0.0),
+    default=12.0,
+    show_default=True,
+    help="Cap on inverse magnitude (dB).",
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=None,
+    help="Write conf to file (default: stdout).",
+)
+def pipewire(
+    measure_file: Path | None,
+    target_file: Path | None,
+    phase: FilterPhase,
+    rate: int,
+    taps: int,
+    max_boost: float,
+    output: Path | None,
+) -> None:
+    """
+    Emit a PipeWire module-filter-chain config with inline FIR coefficients,
+    loadable via services.pipewire.configPackages or /etc/pipewire/pipewire.conf.d/.
+    """
+    if measure_file is None and target_file is None:
+        raise click.UsageError(
+            "at least one of -m/--measure or -t/--target is required"
+        )
+
+    measurement = parse_swproj(measure_file) if measure_file is not None else None
+    target = parse_target_json(target_file) if target_file is not None else None
+
+    config = build_pw_config(
+        measurement=measurement,
+        target=target,
+        rate=rate,
+        taps=taps,
+        max_boost_db=max_boost,
+        phase=phase,
+    )
+    text = emit_conf(config)
 
     if output is not None:
         output.parent.mkdir(parents=True, exist_ok=True)

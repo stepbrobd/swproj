@@ -1,3 +1,4 @@
+import itertools
 import json
 from typing import assert_never
 
@@ -10,7 +11,6 @@ from swproj.types import (
     Measurement,
     TargetEq,
 )
-
 
 _SINK_NAME = "swproj_corrected"
 _MODULE_NAME = "libpipewire-module-filter-chain"
@@ -81,7 +81,7 @@ def _channel_chain(
 
     links: list[dict[str, object]] = [
         {"output": f"{a}:Out", "input": f"{b}:In"}
-        for a, b in zip(stages, stages[1:])
+        for a, b in itertools.pairwise(stages)
     ]
     return f"{stages[0]}:In", f"{stages[-1]}:Out", nodes, links
 
