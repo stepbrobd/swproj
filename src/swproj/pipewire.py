@@ -122,7 +122,7 @@ def build_config(
         "playback.props": {
             "node.name": f"{_SINK_NAME}_playback",
             "audio.position": ["FL", "FR"],
-            "node.passive": True,
+            # "node.passive": True,
         },
     }
 
