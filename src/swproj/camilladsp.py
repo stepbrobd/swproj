@@ -29,7 +29,23 @@ def _represent_flow_list(dumper: yaml.SafeDumper, data: _FlowList) -> yaml.Seque
     return dumper.represent_sequence("tag:yaml.org,2002:seq", data, flow_style=True)
 
 
+def _represent_float(dumper: yaml.SafeDumper, value: float) -> yaml.ScalarNode:
+    text = f"{value:.7g}"
+    if "." not in text and "e" not in text:
+        text += ".0"
+    return dumper.represent_scalar("tag:yaml.org,2002:float", text)
+
+
 _CompactDumper.add_representer(_FlowList, _represent_flow_list)
+_CompactDumper.add_representer(float, _represent_float)
+
+
+def _quantize_fir(h: FloatArr) -> FloatArr:
+    """
+    Snap each coefficient to the nearest float32, then widen back to float64.
+    ~7 sigfigs is below audibility for a RC FIR.
+    """
+    return h.astype(np.float32).astype(np.float64)
 
 
 def _min_phase_spectrum(mag_lin: FloatArr) -> ComplexArr:
@@ -87,7 +103,7 @@ def correction_fir(
         case _:
             assert_never(phase)
 
-    return h.astype(np.float64)
+    return _quantize_fir(h.astype(np.float64))
 
 
 def _biquad_params(spec: BiquadSpec) -> dict[str, object]:
