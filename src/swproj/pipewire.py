@@ -12,7 +12,7 @@ from swproj.types import (
     TargetEq,
 )
 
-_SINK_NAME = "swproj_corrected"
+_SINK_NAME = "swproj"
 _MODULE_NAME = "libpipewire-module-filter-chain"
 
 
@@ -105,8 +105,8 @@ def build_config(
     in_r, out_r, nodes_r, links_r = _channel_chain("r", ir_r, rate, biquads)
 
     args: dict[str, object] = {
-        "node.description": "swproj Room Correction",
-        "media.name": "swproj Room Correction",
+        "node.description": "SwProj Audio",
+        "media.name": "SwProj Audio",
         "filter.graph": {
             "nodes": nodes_l + nodes_r,
             "links": links_l + links_r,
@@ -114,13 +114,13 @@ def build_config(
             "outputs": [out_l, out_r],
         },
         "capture.props": {
-            "node.name": _SINK_NAME,
+            "node.name": f"{_SINK_NAME}_capture",
             "media.class": "Audio/Sink",
             "audio.channels": 2,
             "audio.position": ["FL", "FR"],
         },
         "playback.props": {
-            "node.name": f"{_SINK_NAME}_out",
+            "node.name": f"{_SINK_NAME}_playback",
             "audio.position": ["FL", "FR"],
             "node.passive": True,
         },
